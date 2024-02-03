@@ -6,3 +6,16 @@ body {
         "Segoe UI", Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
         sans-serif;
 }
+#name {
+    background: linear-gradient(
+        45deg,
+        rgb(66, 138, 245),
+        rgb(245, 66, 239),
+        rgb(66, 138, 245),
+        rgb(245, 66, 239)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-stroke: 3px, #ffffff;
+}
