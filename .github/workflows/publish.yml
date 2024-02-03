@@ -1,0 +1,27 @@
+name: Publish
+on:
+    push:
+        branches: ["main"]
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout repository
+              uses: actions/checkout@v4
+            - name: Setup Node.js
+              uses: actions/setup-node@v3.6.0
+              with:
+                  # Set always-auth in npmrc.
+                  always-auth: false# optional, default is false
+                  # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
+                  node-version: 18.x # optional
+                  cache: npm # optional
+            - name: Install Dependencies
+              run: |
+                  npm install
+            - name: Build Website
+              run: npm run build
+            - name: Upload Artifacts
+              uses: actions/upload-pages-artifact@v1.0.7
+              with:
+                  path: "dist/"
