@@ -1,11 +1,12 @@
+import { Router, Route } from "@solidjs/router";
 import { Component } from "solid-js";
-
+import Home from "./pages/Home";
 const App: Component = () => {
-  return (
-    <div class="h-screen flex justify-center items-center">
-      <span class="text-6xl font-bold">Hello Solid</span>
-    </div>
-  );
+    return (
+        <Router>
+            <Route path="/" component={Home} />
+        </Router>
+    );
 };
 
 export default App;
