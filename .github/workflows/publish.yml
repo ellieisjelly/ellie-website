@@ -21,6 +21,10 @@ jobs:
                   npm install
             - name: Build Website
               run: npm run build
+            - name: Copy index.html to 404.html
+              run: |
+                  cd dist
+                  cp index.html 404.html
             - name: Upload Artifacts
               uses: actions/upload-pages-artifact@v1.0.7
               with:
