@@ -3,6 +3,7 @@ import { createSignal } from "solid-js";
 enum TopbarButtons {
     Home,
     About,
+    Blog,
 }
 
 function TopbarButton(props: { name: string; href: string; active: boolean }) {
@@ -26,17 +27,23 @@ function isActive(button: TopbarButtons, activeButton: TopbarButtons) {
 }
 export default function (props: { activeButton: TopbarButtons }) {
     return (
-        <div class="bg-mantle backdrop-blur-sm border-b-crust w-full h-12 flex flex-row-reverse gap-2 items-center sticky top-0">
+        <div class="bg-mantle backdrop-blur-sm border-b-crust w-full h-12 flex flex-row-reverse gap-2 items-center sticky top-0 pr-2">
             <TopbarButton
-                name="Home"
-                href="/home"
-                active={isActive(TopbarButtons.Home, props.activeButton)}
+                name="Blog"
+                href="/blog"
+                active={isActive(TopbarButtons.Blog, props.activeButton)}
             />
             <Separator />
             <TopbarButton
                 name="About"
                 href="/about"
                 active={isActive(TopbarButtons.About, props.activeButton)}
+            />
+            <Separator />
+            <TopbarButton
+                name="Home"
+                href="/home"
+                active={isActive(TopbarButtons.Home, props.activeButton)}
             />
         </div>
     );
