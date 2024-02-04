@@ -6,7 +6,7 @@ export default function () {
             <Topbar activeButton={TopbarButtons.About} />
             <h1 class="font-bold text-6xl py-12">About Me</h1>
             <div class="flex flex-row justify-center py-16">
-                <div class="text-2xl max-w-[77%] lg:max-w-[50%] text-left tracking-wide">
+                <div class="text-lg md:text-2xl md:tracking-wide max-w-[77%] lg:max-w-[50%] text-left">
                     Hi! I'm Ellie, a{" "}
                     <span class="text-subtext0 text-xs">bad</span>
                     Programmer interested in software development, hardware
