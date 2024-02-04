@@ -40,7 +40,7 @@ export default function () {
                     src="pfp.png"
                     height="348"
                     width="348"
-                    class="rounded-full min-h-[174px] max-h-[174px] min-w-[174px] max-w-[174px] lg:min-h-[348px] lg:max-h-[348px] lg:min-w-[348px] lg:max-w-[348px]"
+                    class="rounded-full min-h-[87px] max-h-[87px] min-w-[87px] max-w-[87px] md:min-h-[174px] md:max-h-[174px] md:min-w-[174px] md:max-w-[174px] lg:min-h-[348px] lg:max-h-[348px] lg:min-w-[348px] lg:max-w-[348px]"
                 />
             </div>
         </div>
