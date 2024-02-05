@@ -36,7 +36,7 @@ function dateToString(date: Date, relative?: boolean) {
 }
 export default function (props: { post: Post }) {
     return (
-        <div class="bg-base border-surface0 border-2 px-4 py-2 rounded-2xl">
+        <div class="bg-base border-surface0 border-2 px-4 py-2 rounded-2xl shrink-0 grow-0 basis-3/12 lg:basis-1/6">
             <h2 class="text-2xl text-center">{props.post.title}</h2>
 
             <p>{props.post.desc}</p>

@@ -21,8 +21,8 @@ export default function () {
     return (
         <div class="fade text-left">
             <Topbar activeButton={TopbarButtons.Blog} />
-            <div class="max-w-[77%] lg:max-w-[50%]">
-                <div class="flex flex-wrap flex-row py-12 gap-4 px-12 justify-center ">
+            <div class="max-w-2/3 lg:max-w-1/2 right-0 left-0 m-auto">
+                <div class="flex flex-wrap flex-col lg:flex-row py-12 gap-4 px-12 justify-center">
                     <For each={posts()}>
                         {(post: Post) => <BlogPost post={post} />}
                     </For>
