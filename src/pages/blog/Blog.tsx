@@ -1,6 +1,7 @@
-import Topbar, { TopbarButtons } from "../components/Topbar";
-import BlogPost, { Post } from "../components/BlogPost";
+import Topbar, { TopbarButtons } from "../../components/Topbar";
+import BlogPost, { Post } from "../../components/BlogPost";
 import { createResource, For } from "solid-js";
+import { apiUrl } from "../../App";
 
 type getPosts = {
     post: Array<Post>;
@@ -8,7 +9,7 @@ type getPosts = {
 export default function () {
     const [posts] = createResource(async () => {
         const postList: getPosts = await (
-            await fetch("https://api.ellieis.me/getPosts")
+            await fetch(apiUrl + "getPosts")
         ).json();
         for (const post of postList.post) {
             post.postDate = new Date(post.postDate);
