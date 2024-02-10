@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Blog from "./pages/blog/Blog";
 import PostViewer from "./pages/blog/PostViewer";
+import "./bg.css";
 const App: Component = () => {
     return (
         <Router>
