@@ -4,7 +4,7 @@ import { Suspense, createEffect, createResource } from "solid-js";
 import { apiUrl } from "../../App";
 import type { Post } from "../../components/BlogPost";
 import { marked } from "marked";
-import hljs from "highlight.js";
+import hljs from "highlight.js/lib/common";
 import "./blogpost.css";
 import "highlight.js/styles/github-dark.css";
 type getPost = {
@@ -53,7 +53,6 @@ export default function () {
         console.log(response);
         return response.post;
     });
-    console.log(post());
     return (
         <div>
             <Topbar activeButton={TopbarButtons.Blog} />
