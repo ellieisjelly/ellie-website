@@ -1,10 +1,12 @@
 import { useParams } from "@solidjs/router";
 import Topbar, { TopbarButtons } from "../../components/Topbar";
-import { Suspense, createResource } from "solid-js";
+import { Suspense, createEffect, createResource } from "solid-js";
 import { apiUrl } from "../../App";
 import type { Post } from "../../components/BlogPost";
 import { marked } from "marked";
+import hljs from "highlight.js";
 import "./blogpost.css";
+import "highlight.js/styles/github-dark.css";
 type getPost = {
     post: Post;
 };
@@ -19,6 +21,14 @@ function renderPost(post?: Post) {
     const [parsedContent] = createResource(async () => {
         return await marked.parse(post.content);
     });
+    createEffect(() => {
+        document
+            .querySelector("#post-markdown")
+            ?.querySelectorAll("code")
+            .forEach((element) => {
+                hljs.highlightElement(element);
+            });
+    });
     return (
         <div class="px-4 py-12 md:px-96" id="post-markdown">
             <h1 class="text-2xl text-center">{post.title}</h1>
@@ -26,7 +36,7 @@ function renderPost(post?: Post) {
 
             <hr class="py-4" />
             {/*eslint-disable-next-line solid/no-innerhtml*/}
-            <section innerHTML={parsedContent()} />
+            <section innerHTML={parsedContent()} id="post-content" />
         </div>
     );
 }
