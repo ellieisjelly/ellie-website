@@ -28,7 +28,7 @@ export default function () {
                 }
             >
                 <div class="max-w-2/3 lg:max-w-1/2 right-0 left-0 m-auto">
-                    <div class="flex flex-wrap flex-col lg:flex-row py-12 gap-4 px-12 justify-center">
+                    <div class="flex flex-wrap flex-col-reverse lg:flex-row py-12 gap-4 px-12 justify-center">
                         <For each={posts()}>
                             {(post: Post) => <BlogPost post={post} />}
                         </For>
