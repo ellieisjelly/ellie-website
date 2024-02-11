@@ -2,7 +2,7 @@ import { useParams } from "@solidjs/router";
 import Topbar, { TopbarButtons } from "../../components/Topbar";
 import { Suspense, createEffect, createResource } from "solid-js";
 import { apiUrl } from "../../App";
-import type { Post } from "../../components/BlogPost";
+import { dateToString, type Post } from "../../components/BlogPost";
 import { marked } from "marked";
 import hljs from "highlight.js/lib/common";
 import "./blogpost.css";
@@ -33,13 +33,20 @@ function renderPost(post?: Post) {
         <div class="px-4 py-12 md:px-96" id="post-markdown">
             <h1 class="text-2xl text-center">{post.title}</h1>
             <img src={post.image} class="rounded-3xl w-[90%] m-auto py-2" />
-
+            <div class="text-xl flex gap-2 items-center my-4 justify-center">
+                {post.desc}{" "}
+                <div class="bg-surface0 min-w-[2px] min-h-8 mx-[8px]" />
+                <span class="text-overlay1 text-sm">
+                    {dateToString(post.postDate)}
+                </span>
+            </div>
             <hr class="py-4" />
             {/*eslint-disable-next-line solid/no-innerhtml*/}
             <section innerHTML={parsedContent()} id="post-content" />
         </div>
     );
 }
+export { renderPost };
 export default function () {
     const params = useParams();
     const [post] = createResource(async () => {
@@ -51,6 +58,7 @@ export default function () {
             })
         ).json();
         console.log(response);
+        response.post.postDate = new Date(response.post.postDate);
         return response.post;
     });
     return (

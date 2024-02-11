@@ -67,4 +67,8 @@
         padding-bottom: 2rem;
         overflow-x: scroll;
     }
+
+    hr {
+        border-color: rgba(var(--ctp-surface1), 1);
+    }
 }

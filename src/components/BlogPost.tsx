@@ -37,6 +37,8 @@ function dateToString(date: Date, relative?: boolean) {
     }
     return `${month}/${day}/${year}`;
 }
+
+export { dateToString };
 export default function (props: { post: Post }) {
     return (
         <A
