@@ -7,7 +7,7 @@ export default function () {
         setInterval(() => {
             if (!isPlaying) {
                 console.log("chance");
-                if (Math.random() > 0.9) {
+                if (Math.random() > 0.98) {
                     console.log("playing");
                     isPlaying = true;
                     const doge = document.getElementById("doge");
@@ -20,7 +20,7 @@ export default function () {
                         setTimeout(() => {
                             isPlaying = false;
                             doge.className = "doge";
-                        }, 10000);
+                        }, 4000);
                     }
                 }
             }
