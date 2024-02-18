@@ -4,6 +4,7 @@ const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
 const Blog = lazy(() => import("./pages/blog/Blog"));
 const PostViewer = lazy(() => import("./pages/blog/PostViewer"));
+const PostCreator = lazy(() => import("./pages/blog/PostCreator"));
 import "./bg.css";
 const App: Component = () => {
     return (
@@ -13,6 +14,7 @@ const App: Component = () => {
             <Route path="/about" component={About} />
             <Route path="/blog" component={Blog} />
             <Route path="/blog/post/:id" component={PostViewer} />
+            <Route path="/createPost" component={PostCreator} />
         </Router>
     );
 };

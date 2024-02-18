@@ -29,7 +29,7 @@ export default function () {
     return (
         <div class="fade">
             <Topbar activeButton={TopbarButtons.Home} />
-            <div class="text-center py-12">
+            <section class="text-center py-12">
                 <h1 class="text-8xl" id="name">
                     Hi, I'm Ellie!
                 </h1>
@@ -49,7 +49,7 @@ export default function () {
                     id="doge"
                     class="doge"
                 />
-            </div>
+            </section>
         </div>
     );
 }

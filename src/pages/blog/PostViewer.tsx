@@ -10,7 +10,7 @@ import "highlight.js/styles/github-dark.css";
 type getPost = {
     post: Post;
 };
-function renderPost(post?: Post) {
+export function renderPost(post?: Post, noPadding?: boolean) {
     if (!post) {
         return (
             <div class="text-center py-12" id="post-markdown">
@@ -30,7 +30,7 @@ function renderPost(post?: Post) {
             });
     });
     return (
-        <div class="px-4 py-12 md:px-96" id="post-markdown">
+        <div class={!noPadding ? "px-4 py-12 md:px-96" : ""} id="post-markdown">
             <h1 class="text-2xl text-center">{post.title}</h1>
             <img src={post.image} class="rounded-3xl w-[90%] m-auto py-2" />
             <div class="text-xl flex gap-2 items-center my-4 justify-center">
@@ -46,7 +46,7 @@ function renderPost(post?: Post) {
         </div>
     );
 }
-export { renderPost };
+
 export default function () {
     const params = useParams();
     const [post] = createResource(async () => {

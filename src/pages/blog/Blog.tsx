@@ -1,7 +1,42 @@
 import Topbar, { TopbarButtons } from "../../components/Topbar";
 import BlogPost, { Post } from "../../components/BlogPost";
-import { createResource, For, Suspense } from "solid-js";
+import { createResource, For, Show, Suspense } from "solid-js";
+import { A } from "@solidjs/router";
 import { apiUrl } from "../../App";
+
+async function getSHA256Hash(input: string) {
+    const textAsBuffer = new TextEncoder().encode(input);
+    const hashBuffer = await window.crypto.subtle.digest(
+        "SHA-256",
+        textAsBuffer
+    );
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hash = hashArray
+        .map((item) => item.toString(16).padStart(2, "0"))
+        .join("");
+    return hash;
+}
+
+export async function validatePassword(pass: string) {
+    const response: validatePassword = await (
+        await fetch(apiUrl + "validatePassword", {
+            headers: { "Content-Type": "application/json" },
+            method: "POST",
+            body: JSON.stringify({
+                auth: await getSHA256Hash(pass),
+            }),
+        })
+    ).json();
+    return response.auth;
+}
+type validatePassword =
+    | {
+          auth: true;
+      }
+    | {
+          auth: false;
+          error: string;
+      };
 
 type getPosts = {
     post: Array<Post>;
@@ -19,6 +54,11 @@ export default function () {
         });
         return sortedPostList;
     });
+    const [isAdmin] = createResource(async () => {
+        const pass = localStorage.getItem("password");
+        if (!pass) return false;
+        return validatePassword(pass);
+    });
     return (
         <div class="fade text-left">
             <Topbar activeButton={TopbarButtons.Blog} />
@@ -28,11 +68,18 @@ export default function () {
                 }
             >
                 <div class="max-w-2/3 lg:max-w-1/2 right-0 left-0 m-auto">
-                    <div class="flex flex-wrap flex-col-reverse lg:flex-row py-12 gap-4 px-12 justify-center">
+                    <Show when={isAdmin() === true}>
+                        <section class="text-center">
+                            <A class="" href="/createPost">
+                                Create a Post
+                            </A>
+                        </section>
+                    </Show>
+                    <section class="flex flex-wrap flex-col-reverse lg:flex-row py-12 gap-4 px-12 justify-center">
                         <For each={posts()}>
                             {(post: Post) => <BlogPost post={post} />}
                         </For>
-                    </div>
+                    </section>
                 </div>
             </Suspense>
         </div>
