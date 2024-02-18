@@ -4,7 +4,7 @@ import { createResource, For, Show, Suspense } from "solid-js";
 import { A } from "@solidjs/router";
 import { apiUrl } from "../../App";
 
-async function getSHA256Hash(input: string) {
+export async function getSHA256Hash(input: string) {
     const textAsBuffer = new TextEncoder().encode(input);
     const hashBuffer = await window.crypto.subtle.digest(
         "SHA-256",
@@ -29,7 +29,7 @@ export async function validatePassword(pass: string) {
     ).json();
     return response.auth;
 }
-type validatePassword =
+export type validatePassword =
     | {
           auth: true;
       }
@@ -38,9 +38,10 @@ type validatePassword =
           error: string;
       };
 
-type getPosts = {
+export type getPosts = {
     post: Array<Post>;
 };
+export type makePost = validatePassword;
 export default function () {
     const [posts] = createResource(async () => {
         const postList: getPosts = await (
@@ -70,7 +71,7 @@ export default function () {
                 <div class="max-w-2/3 lg:max-w-1/2 right-0 left-0 m-auto">
                     <Show when={isAdmin() === true}>
                         <section class="text-center">
-                            <A class="" href="/createPost">
+                            <A class="" href="/blog/createPost">
                                 Create a Post
                             </A>
                         </section>

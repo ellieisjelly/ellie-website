@@ -46,7 +46,6 @@ export default function (props: { post: Post }) {
             href={"/blog/post/" + props.post._id}
         >
             <h2 class="text-2xl text-center">{props.post.title}</h2>
-
             <p>{props.post.desc}</p>
             <p class="text-sm text-subtext0 text-right">
                 {dateToString(props.post.postDate)}
