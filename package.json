@@ -15,6 +15,7 @@
         "prepare": "husky install"
     },
     "devDependencies": {
+        "@catppuccin/highlightjs": "^0.1.4",
         "@catppuccin/tailwindcss": "^0.1.6",
         "@commitlint/cli": "^17.6.5",
         "@commitlint/config-conventional": "^17.6.5",

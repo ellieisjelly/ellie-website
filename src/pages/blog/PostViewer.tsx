@@ -6,7 +6,7 @@ import { dateToString, type Post } from "../../components/BlogPost";
 import { marked } from "marked";
 import hljs from "highlight.js/lib/common";
 import "./blogpost.css";
-import "highlight.js/styles/github-dark.css";
+import "@catppuccin/highlightjs/css/catppuccin-mocha.css";
 type getPost = {
     post: Post;
 };
@@ -21,6 +21,12 @@ export function renderPost(post?: Post, noPadding?: boolean) {
     const [parsedContent] = createResource(async () => {
         return await marked.parse(post.content);
     });
+    document
+        .querySelector("#post-markdown")
+        ?.querySelectorAll("code")
+        .forEach((element) => {
+            hljs.highlightElement(element);
+        });
     createEffect(() => {
         document
             .querySelector("#post-markdown")
