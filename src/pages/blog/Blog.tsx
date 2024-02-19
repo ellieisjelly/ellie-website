@@ -55,7 +55,7 @@ export default function () {
         });
         return sortedPostList;
     });
-    const [isAdmin] = createResource(async () => {
+    const [isAdmin, { refetch }] = createResource(async () => {
         const pass = localStorage.getItem("password");
         if (!pass) return false;
         return validatePassword(pass);
@@ -78,7 +78,13 @@ export default function () {
                     </Show>
                     <section class="flex flex-wrap flex-col-reverse lg:flex-row py-12 gap-4 px-12 justify-center">
                         <For each={posts()}>
-                            {(post: Post) => <BlogPost post={post} />}
+                            {(post: Post) => (
+                                <BlogPost
+                                    post={post}
+                                    adminControls={isAdmin()}
+                                    onDelete={refetch}
+                                />
+                            )}
                         </For>
                     </section>
                 </div>

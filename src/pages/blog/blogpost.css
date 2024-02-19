@@ -56,15 +56,16 @@
         margin-right: 0;
         font-weight: bold;
     }
-
-    code {
-        font-family: "Monocraft", monospace;
+    pre code {
         display: block;
-        background-color: rgba(var(--ctp-mantle), 1);
         padding-left: 1rem;
         padding-right: 1rem;
         padding-top: 2rem;
         padding-bottom: 2rem;
+    }
+    code {
+        font-family: "Monocraft", monospace;
+        background-color: rgba(var(--ctp-mantle), 1);
         overflow-x: scroll;
     }
 

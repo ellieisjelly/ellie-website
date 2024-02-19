@@ -7,8 +7,8 @@ import { marked } from "marked";
 import hljs from "highlight.js/lib/common";
 import "./blogpost.css";
 import "@catppuccin/highlightjs/css/catppuccin-mocha.css";
-type getPost = {
-    post: Post;
+export type getPost = {
+    post: Post | null;
 };
 export function renderPost(post?: Post, noPadding?: boolean) {
     if (!post) {
@@ -63,9 +63,10 @@ export default function () {
                 body: JSON.stringify({ _id: params.id }),
             })
         ).json();
-        console.log(response);
-        response.post.postDate = new Date(response.post.postDate);
-        return response.post;
+        if (response.post) {
+            response.post.postDate = new Date(response.post.postDate);
+            return response.post;
+        }
     });
     return (
         <div>

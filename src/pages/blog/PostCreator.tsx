@@ -1,11 +1,14 @@
 import { createSignal, onCleanup, onMount } from "solid-js";
 import Topbar, { TopbarButtons } from "../../components/Topbar";
-import { renderPost } from "./PostViewer";
+import { getPost, renderPost } from "./PostViewer";
 import { Post } from "../../components/BlogPost";
-import { getPosts, getSHA256Hash, makePost, validatePassword } from "./Blog";
+import { getPosts, getSHA256Hash, makePost } from "./Blog";
 import { apiUrl } from "../../App";
+import { useParams } from "@solidjs/router";
 
 export default function () {
+    const params = useParams();
+    let post: Post | undefined;
     const [title, setTitle] = createSignal("");
     const [desc, setDesc] = createSignal("");
     const [image, setImage] = createSignal("");
@@ -13,22 +16,56 @@ export default function () {
     const [content, setContent] = createSignal("");
 
     onCleanup(() => {
-        console.log("saving!");
-        localStorage.setItem(
-            "post-draft",
-            JSON.stringify({
-                title: title(),
-                desc: desc(),
-                image: image(),
-                tags: tags(),
-                content: content(),
-            })
-        );
+        if (post) {
+            localStorage.setItem(
+                "post-draft-" + post._id,
+                JSON.stringify({
+                    title: title(),
+                    desc: desc(),
+                    image: image(),
+                    tags: tags(),
+                    content: content(),
+                })
+            );
+        } else {
+            localStorage.setItem(
+                "post-draft",
+                JSON.stringify({
+                    title: title(),
+                    desc: desc(),
+                    image: image(),
+                    tags: tags(),
+                    content: content(),
+                })
+            );
+        }
     });
-    onMount(() => {
-        const val = localStorage.getItem("post-draft");
-        if (val === null) return;
-        const draft: Post | undefined = JSON.parse(val);
+    onMount(async () => {
+        let draft: Post | undefined;
+        if (params.id) {
+            const val = localStorage.getItem("post-draft-" + params.id);
+            if (val !== null) {
+                draft = JSON.parse(val);
+                post = draft;
+            } else {
+                const postResponse: getPost = await (
+                    await fetch(apiUrl + "getPost", {
+                        headers: { "Content-Type": "application/json" },
+                        method: "POST",
+                        body: JSON.stringify({ _id: params.id }),
+                    })
+                ).json();
+                if (postResponse.post) {
+                    draft = postResponse.post;
+                    post = draft;
+                }
+            }
+        } else {
+            const val = localStorage.getItem("post-draft");
+            if (val === null) return;
+            draft = JSON.parse(val);
+        }
+
         if (draft === undefined) return;
         setTitle(draft.title);
         setDesc(draft.desc);
@@ -120,17 +157,30 @@ export default function () {
                     <button
                         class="bg-red text-white px-4 py-2 my-2 mx-8 rounded-xl"
                         onClick={() => {
-                            console.log("saving!");
-                            localStorage.setItem(
-                                "post-draft",
-                                JSON.stringify({
-                                    title: title(),
-                                    desc: desc(),
-                                    image: image(),
-                                    tags: tags(),
-                                    content: content(),
-                                })
-                            );
+                            if (post) {
+                                localStorage.setItem(
+                                    "post-draft-" + post._id,
+                                    JSON.stringify({
+                                        title: title(),
+                                        desc: desc(),
+                                        image: image(),
+                                        tags: tags(),
+                                        content: content(),
+                                    })
+                                );
+                            } else {
+                                localStorage.setItem(
+                                    "post-draft",
+                                    JSON.stringify({
+                                        title: title(),
+                                        desc: desc(),
+                                        image: image(),
+                                        tags: tags(),
+                                        content: content(),
+                                    })
+                                );
+                            }
+
                             alert("Saved!");
                         }}
                     >
@@ -140,10 +190,19 @@ export default function () {
                         class="bg-green text-white px-4 py-2 rounded-xl"
                         onClick={async () => {
                             // calculate post id
-                            const postResponse: getPosts = await (
-                                await fetch(apiUrl + "getPosts")
-                            ).json();
-                            const id = postResponse.post.length;
+                            let id;
+                            let date;
+                            if (post) {
+                                // is editing, id is already set.
+                                id = post._id;
+                                date = post.postDate;
+                            } else {
+                                const postResponse: getPosts = await (
+                                    await fetch(apiUrl + "getPosts")
+                                ).json();
+                                id = postResponse.post.length;
+                                date = new Date();
+                            }
 
                             const password = localStorage.getItem("password");
                             if (!password) {
@@ -161,24 +220,45 @@ export default function () {
                                 desc: desc(),
                                 tags: tags(),
                                 content: content(),
-                                postDate: new Date(),
+                                postDate: date,
                                 auth: hashedPassword,
                             });
-
-                            const response: makePost = await (
-                                await fetch(apiUrl + "publishPost", {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                    },
-                                    body: json,
-                                })
-                            ).json();
+                            let response: makePost;
+                            if (post) {
+                                // edit
+                                response = await (
+                                    await fetch(apiUrl + "updatePost", {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
+                                        body: json,
+                                    })
+                                ).json();
+                            } else {
+                                // publish
+                                response = await (
+                                    await fetch(apiUrl + "publishPost", {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
+                                        body: json,
+                                    })
+                                ).json();
+                            }
                             if (response.auth === false) {
                                 alert(
                                     "Failed to publish post, likely an invalid password."
                                 );
                             } else {
+                                if (post) {
+                                    localStorage.removeItem(
+                                        "post-draft-" + post._id
+                                    );
+                                } else {
+                                    localStorage.removeItem("post-draft");
+                                }
                                 alert("Post published succesfully!");
                             }
                         }}

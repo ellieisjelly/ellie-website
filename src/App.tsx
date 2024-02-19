@@ -14,7 +14,7 @@ const App: Component = () => {
             <Route path="/about" component={About} />
             <Route path="/blog" component={Blog} />
             <Route path="/blog/post/:id" component={PostViewer} />
-            <Route path="/blog/createPost" component={PostCreator} />
+            <Route path="/blog/createPost/:id?" component={PostCreator} />
         </Router>
     );
 };
