@@ -19,7 +19,7 @@ const App: Component = () => {
     );
 };
 
-const apiUrl = "https://blog-backend-e4wmb1z8y94h.deno.dev/";
+const apiUrl = "https://api.ellieis.me/";
 
 export { apiUrl };
 export default App;
